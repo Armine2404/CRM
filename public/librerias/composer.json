@@ -1,0 +1,16 @@
+{
+    "name": "pedro/librerias",
+    "description": "librerias importadas desde composer para el proyecto",
+    "type": "project",
+    "require": {
+        "almasaeed2010/adminlte": "^3.0",
+        "fullcalendar/fullcalendar": "^3.10",
+        "robloach/component-installer": "^0.2.3"
+    },
+    "authors": [
+        {
+            "name": "dataleanmakers",
+            "email": "pedro.silva@dataleanmakers.es"
+        }
+    ]
+}

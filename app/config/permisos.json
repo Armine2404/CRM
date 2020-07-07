@@ -1,0 +1,47 @@
+{
+    "administrador": {
+        "analisis": "ver",
+        "planificacion": "ver",
+        "clientes": "ver",
+        "agenda": "ver",
+        "acciones": "ver",
+        "config": "ver",
+        "tipoCliente": "ver",
+        "usuarios": "ver",
+        "roles": "ver",
+        "permisos": "ver",
+        "tipoAcciones": "ver",
+        "tiempos": "ver",
+        "buscadorclientes": "ver"
+    },
+    "direccion": {
+        "analisis": "ocultar",
+        "planificacion": "ver",
+        "clientes": "ver",
+        "agenda": "ver",
+        "acciones": "ver",
+        "config": "ocultar",
+        "tipoCliente": "ocultar",
+        "usuarios": "ocultar",
+        "roles": "ocultar",
+        "permisos": "ocultar",
+        "tipoAcciones": "ocultar",
+        "tiempos": "ocultar",
+        "buscadorclientes": "ver"
+    },
+    "agente": {
+        "analisis": "ocultar",
+        "planificacion": "ver",
+        "clientes": "ver",
+        "agenda": "ver",
+        "acciones": "ver",
+        "config": "ocultar",
+        "tipoCliente": "ocultar",
+        "usuarios": "ocultar",
+        "roles": "ocultar",
+        "permisos": "ocultar",
+        "tipoAcciones": "ocultar",
+        "tiempos": "ocultar",
+        "buscadorclientes": "ver"
+    }
+}
