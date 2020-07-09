@@ -1,13 +1,13 @@
 <?php
 
 class ConectarDT {
-   protected $user = "package";
+   protected $user = "root";
     public $db;
-    protected $pass = "Package2020$";
+    protected $pass = "";
 
     public function __construct() {
 
-    $this->db = new PDO('mysql:host=185.92.246.83;dbname=admin_package', $this->user, $this->pass);
+    $this->db = new PDO('mysql:host=localhost;dbname=admin_package', $this->user, $this->pass);
     return $this->db;
 
     }

@@ -2,8 +2,25 @@
 //   "use strict";
 
 $(document).ready(function () {
-
-
+    // ocultar y enseñar culumnas de tablas y cambiar el color
+	$('a.toggle-viss').on('click', function () {
+		if ($(this).attr('data-click-state') == 1) { 
+			$(this).attr('data-click-state', 0);
+			$(this).css('color', 'black')
+		} else {
+			$(this).attr('data-click-state', 1);
+			$(this).css('color', 'red')
+		}
+	});
+	$('a.roj').on('click', function () {
+		if ($(this).attr('data-click-state') == 1) {
+			$(this).attr('data-click-state', 0);
+			$(this).css('color', 'red')
+		} else {
+			$(this).attr('data-click-state', 1);
+			$(this).css('color', 'black')
+		}
+	});
 	//  $.fn.dataTable.moment( "DD-MM-YYYY" );
 	//$.fn.modal.Constructor.prototype.enforceFocus = $.noop;
 
@@ -32,7 +49,7 @@ $(document).ready(function () {
 
 	// CLIENTES
 	if (window.location.pathname.includes('/clientes')) {
-     
+
 		/* Añdir cajas de busqueda a las cabeceras */
 		console.log('BUSCAMOS CLIENTES');
 		$('#table_clientes thead th').each(function () {
@@ -43,28 +60,31 @@ $(document).ready(function () {
 		let clientes = $('#table_clientes').DataTable({
 			"processing": true,
 			"serverSide": true,
-			"ajax": "Clientes/getClientes",  // ../Controlador/funcion
+			"ajax": "Clientes/getClientes", // ../Controlador/funcion
 			"info": false,
 			"language": {
 				"url": "datatables/Languages/Spanish.json"
 			},
 			"columnDefs": [{
 
-				targets: [0, 7, 8, 9, 10, 11, 12, 13, 14],
-				"bVisible": false
-			},
-			{
-				targets: 15,
-				render: function (data, type, row, meta) {
-					let edit = '<a href="" style = "display:none"  data-toggle="modal" data-target="#ModalEdit"  class="trtr btn btn-warning btn-sm edit"' +
-						' data-id="' + row[0] + '" ><span class="fa fa-edit"></span></a>';
-					let deleteRow = '<a href="" style = "display:none" data-toggle="modal" data-target="#ModalDelete"  class="trtr  btn btn-danger btn-sm delete"' +
-						' data-id="' + row[0] + '" data-denominacion="' + row[1] + '"><span class="fa fa-trash"></span></a>';
-					return edit + deleteRow;
-				}
+					targets: [0, 7, 8, 9, 10, 11, 12, 13, 14],
+					"bVisible": false
+				},
+				{
+					targets: 15,
+					render: function (data, type, row, meta) {
+						let edit = '<a href=""  data-toggle="modal" data-target="#ModalEdit"  class="btn btn-warning btn-sm edit"' +
+							' data-id="' + row[0] + '" ><span class="fa fa-edit"></span></a>';
+						let deleteRow = '<a href="" data-toggle="modal" data-target="#ModalDelete"  class="trtr  btn btn-danger btn-sm delete"' +
+							' data-id="' + row[0] + '" data-denominacion="' + row[1] + '"><span class="fa fa-trash"></span></a>';
+						return edit + " " + deleteRow;
+					}
 
-			},
-			{ className: "dt-center", targets: ["_all"] }
+				},
+				{
+					className: "dt-center",
+					targets: ["_all"]
+				}
 			],
 			'responsive': true,
 			'dom': 'lBfrtip',
@@ -83,8 +103,7 @@ $(document).ready(function () {
 					});
 				});
 			},
-			"buttons": [
-				{
+			"buttons": [{
 					"extend": 'excelHtml5',
 					"text": '<i class="fas fa-file-excel" style="color:green;"></i>',
 					"titleAttr": 'Exportar a Excel',
@@ -136,26 +155,6 @@ $(document).ready(function () {
 			// Toggle the visibility
 			column.visible(!column.visible());
 		});
-		$('a.toggle-viss').on('click', function () {
-			if ($(this).attr('data-click-state') == 1) {
-				$(this).attr('data-click-state', 0);
-				$(this).css('color', 'black')
-			}
-			else {
-				$(this).attr('data-click-state', 1);
-				$(this).css('color', 'red')
-			}
-		});
-		$('a.roj').on('click', function () {
-			if ($(this).attr('data-click-state') == 1) {
-				$(this).attr('data-click-state', 0);
-				$(this).css('color', 'red')
-			}
-			else {
-				$(this).attr('data-click-state', 1);
-				$(this).css('color', 'black')
-			}
-		});
 		$.fn.dataTable.ext.errMode = 'none';
 		$('#table_clientes').on('error.dt', function (e, settings, techNote, message) {
 			console.log('An error has been reported by DataTables: ', message);
@@ -174,7 +173,9 @@ $(document).ready(function () {
 				var estado = JSON.parse(data);
 				$.each(estado, function (key, value) {
 					$('#selectEstado')
-						.append($('<option>', { value: value['idEstadoCliente'] })
+						.append($('<option>', {
+								value: value['idEstadoCliente']
+							})
 							.text(value['estadoCliente']));
 				});
 			}).fail(function () {
@@ -184,7 +185,7 @@ $(document).ready(function () {
 
 		// EDIT AND DELETE MODALS
 		$('#table_clientes').on('click', '.edit', function () {
-			
+
 			var id = $(this).data('id');
 			$('[name="id"]').val(id);
 
@@ -211,7 +212,9 @@ $(document).ready(function () {
 
 					$.each(estados, function (key, value) {
 						$('#selectEstadoEdit')
-							.append($('<option>', { value: value['idEstadoCliente'] })
+							.append($('<option>', {
+									value: value['idEstadoCliente']
+								})
 								.text(value['estadoCliente']));
 					});
 					$('#selectEstadoEdit').val(data['idEstadoCliente']).change();
@@ -261,28 +264,31 @@ $(document).ready(function () {
 		let estadoCliente = $('#table_esclientes').DataTable({
 			"processing": true,
 			"serverSide": true,
-			"ajax": "EstadoCliente/getEstadoCliente",  // ../Controlador/funcion
+			"ajax": "EstadoCliente/getEstadoCliente", // ../Controlador/funcion
 			"info": false,
 			"language": {
 				"url": "datatables/Languages/Spanish.json"
 			},
 			"columnDefs": [{
 
-				targets: [0],
-				"bVisible": false
-			},
-			{
-				targets: 2,
-				render: function (data, type, row, meta) {
-					let edit = '<a href="" data-toggle="modal" data-target="#ModalEdit"  class="btn btn-warning btn-sm edit"' +
-						' data-id="' + row[0] + '" data-estado="' + row[1] + '" ><span class="fa fa-edit"></span></a>';
-					let deleteRow = '<a href="" data-toggle="modal" data-target="#ModalDelete"  class="btn btn-danger btn-sm delete"' +
-						' data-id="' + row[0] + '" data-estado="' + row[1] + '"  ><span class="fa fa-trash"></span></a>';
-					return edit + deleteRow;
-				}
+					targets: [0],
+					"bVisible": false
+				},
+				{
+					targets: 2,
+					render: function (data, type, row, meta) {
+						let edit = '<a href="" data-toggle="modal" data-target="#ModalEdit"  class="btn btn-warning btn-sm edit"' +
+							' data-id="' + row[0] + '" data-estado="' + row[1] + '" ><span class="fa fa-edit"></span></a>';
+						let deleteRow = '<a href="" data-toggle="modal" data-target="#ModalDelete"  class="btn btn-danger btn-sm delete"' +
+							' data-id="' + row[0] + '" data-estado="' + row[1] + '"  ><span class="fa fa-trash"></span></a>';
+						return edit + deleteRow;
+					}
 
-			},
-			{ className: "dt-center", targets: ["_all"] }
+				},
+				{
+					className: "dt-center",
+					targets: ["_all"]
+				}
 			],
 			'responsive': true,
 			'dom': 'lBfrtip',
@@ -299,8 +305,7 @@ $(document).ready(function () {
 					});
 				});
 			},
-			"buttons": [
-				{
+			"buttons": [{
 					"extend": 'excelHtml5',
 					"text": '<i class="fas fa-file-excel" style="color:green;"></i>',
 					"titleAttr": 'Exportar a Excel',
@@ -383,13 +388,12 @@ $(document).ready(function () {
 		let usuarios = $('#table_usuarios').DataTable({
 			"processing": true,
 			"serverSide": true,
-			"ajax": "usuarios/getUsuariosTabla",  // ../Controlador/funcion
+			"ajax": "usuarios/getUsuariosTabla", // ../Controlador/funcion
 			"info": false,
 			"language": {
 				"url": "datatables/Languages/Spanish.json"
 			},
-			"columnDefs": [
-				{
+			"columnDefs": [{
 					targets: [0, 1],
 					"bVisible": false
 				},
@@ -404,7 +408,10 @@ $(document).ready(function () {
 					}
 
 				},
-				{ className: "dt-center", targets: ["_all"] }
+				{
+					className: "dt-center",
+					targets: ["_all"]
+				}
 			],
 			'responsive': true,
 			'dom': 'lBfrtip',
@@ -423,8 +430,7 @@ $(document).ready(function () {
 					});
 				});
 			},
-			"buttons": [
-				{
+			"buttons": [{
 					"extend": 'excelHtml5',
 					"text": '<i class="fas fa-file-excel" style="color:green;"></i>',
 					"titleAttr": 'Exportar a Excel',
@@ -486,7 +492,9 @@ $(document).ready(function () {
 				$('#selectRol').empty();
 				$.each(roles, function (key, value) {
 					$('#selectRol')
-						.append($('<option>', { value: value['idRol'] })
+						.append($('<option>', {
+								value: value['idRol']
+							})
 							.text(value['nombreRol']));
 				});
 			}).fail(function () {
@@ -518,7 +526,9 @@ $(document).ready(function () {
 				$('#selectRolEdit').empty();
 				$.each(roles, function (key, value) {
 					$('#selectRolEdit')
-						.append($('<option>', { value: value['idRol'] })
+						.append($('<option>', {
+								value: value['idRol']
+							})
 							.text(value['rol']));
 				});
 				$('#selectRolEdit').val(rol).change();
@@ -551,31 +561,34 @@ $(document).ready(function () {
 		let roles = $('#table_roles').DataTable({
 			"processing": true,
 			"serverSide": true,
-			"ajax": "roles/getRoles",  // ../Controlador/funcion
+			"ajax": "roles/getRoles", // ../Controlador/funcion
 			"info": false,
 			"language": {
 				"url": "datatables/Languages/Spanish.json"
 			},
 			"columnDefs": [{
 
-				targets: [0],
-				"bVisible": false
-			},
-			{
-				targets: 2,
-				render: function (data, type, row, meta) {
-					let edit = '<a href="" data-toggle="modal" data-target="#ModalEdit"  class="btn btn-warning btn-sm edit"' +
-						' data-id="' + row[0] + '" data-rol="' + row[1] + '"><span class="fa fa-edit"></span></a>';
-					let deleteRow = '<a href="" data-toggle="modal" data-target="#ModalDelete"  class="btn btn-danger btn-sm delete"' +
-						' data-id="' + row[0] + '" data-rol="' + row[1] + '" ><span class="fa fa-trash"></span></a>';
+					targets: [0],
+					"bVisible": false
+				},
+				{
+					targets: 2,
+					render: function (data, type, row, meta) {
+						let edit = '<a href="" data-toggle="modal" data-target="#ModalEdit"  class="btn btn-warning btn-sm edit"' +
+							' data-id="' + row[0] + '" data-rol="' + row[1] + '"><span class="fa fa-edit"></span></a>';
+						let deleteRow = '<a href="" data-toggle="modal" data-target="#ModalDelete"  class="btn btn-danger btn-sm delete"' +
+							' data-id="' + row[0] + '" data-rol="' + row[1] + '" ><span class="fa fa-trash"></span></a>';
 
-					if (row[0] != 1 && row[0] != 2) {
-						return edit + deleteRow;
+						if (row[0] != 1 && row[0] != 2) {
+							return edit + deleteRow;
+						}
 					}
-				}
 
-			},
-			{ className: "dt-center", targets: ["_all"] }
+				},
+				{
+					className: "dt-center",
+					targets: ["_all"]
+				}
 			],
 			'responsive': true,
 			'dom': 'lBfrtip',
@@ -594,8 +607,7 @@ $(document).ready(function () {
 					});
 				});
 			},
-			"buttons": [
-				{
+			"buttons": [{
 					"extend": 'excelHtml5',
 					"text": '<i class="fas fa-file-excel" style="color:green;"></i>',
 					"titleAttr": 'Exportar a Excel',
@@ -678,13 +690,12 @@ $(document).ready(function () {
 		let acciones = $('#table_acciones').DataTable({
 			"processing": true,
 			"serverSide": true,
-			"ajax": "Acciones/getAccionesTabla",  // ../Controlador/funcion
+			"ajax": "Acciones/getAccionesTabla", // ../Controlador/funcion
 			"info": false,
 			"language": {
 				"url": "datatables/Languages/Spanish.json"
 			},
-			"columnDefs": [
-				{
+			"columnDefs": [{
 					targets: [0, 1, 2, 3, 4],
 					"bVisible": false
 				},
@@ -699,7 +710,10 @@ $(document).ready(function () {
 					}
 
 				},
-				{ className: "dt-center", targets: ["_all"] }
+				{
+					className: "dt-center",
+					targets: ["_all"]
+				}
 			],
 			'responsive': true,
 			'dom': 'lBfrtip',
@@ -718,8 +732,7 @@ $(document).ready(function () {
 					});
 				});
 			},
-			"buttons": [
-				{
+			"buttons": [{
 					"extend": 'excelHtml5',
 					"text": '<i class="fas fa-file-excel" style="color:green;"></i>',
 					"titleAttr": 'Exportar a Excel',
@@ -768,8 +781,7 @@ $(document).ready(function () {
 			if ($(this).attr('data-click-state') == 1) {
 				$(this).attr('data-click-state', 0);
 				$(this).css('color', 'black')
-			}
-			else {
+			} else {
 				$(this).attr('data-click-state', 1);
 				$(this).css('color', 'red')
 			}
@@ -798,7 +810,9 @@ $(document).ready(function () {
 
 				$.each(usuarios, function (key, value) {
 					$('#selectUsuario')
-						.append($('<option>', { value: value['idUsuario'] })
+						.append($('<option>', {
+								value: value['idUsuario']
+							})
 							.text(value['usuario']));
 				});
 			}).fail(function () {
@@ -817,7 +831,9 @@ $(document).ready(function () {
 
 				$.each(clientes, function (key, value) {
 					$('#selectCliente')
-						.append($('<option>', { value: value['idCliente'] })
+						.append($('<option>', {
+								value: value['idCliente']
+							})
 							.text(value['denominacion']));
 				});
 			}).fail(function () {
@@ -836,7 +852,9 @@ $(document).ready(function () {
 
 				$.each(tipo_acciones, function (key, value) {
 					$('#selectTipoAccion')
-						.append($('<option>', { value: value['idTipoAccion'] })
+						.append($('<option>', {
+								value: value['idTipoAccion']
+							})
 							.text(value['tipoAccion']));
 				});
 			}).fail(function () {
@@ -855,7 +873,9 @@ $(document).ready(function () {
 
 				$.each(estado_acciones, function (key, value) {
 					$('#selectEstadoAccion')
-						.append($('<option>', { value: value['idEstadoAccion'] })
+						.append($('<option>', {
+								value: value['idEstadoAccion']
+							})
 							.text(value['estadoAccion']));
 				});
 			}).fail(function () {
@@ -893,7 +913,9 @@ $(document).ready(function () {
 
 					$.each(usuarios, function (key, value) {
 						$('#selectUsuarioEdit')
-							.append($('<option>', { value: value['idUsuario'] })
+							.append($('<option>', {
+									value: value['idUsuario']
+								})
 								.text(value['usuario']));
 					});
 					$('#selectUsuarioEdit').val(data['idUsuario']).change();
@@ -913,7 +935,9 @@ $(document).ready(function () {
 
 					$.each(clientes, function (key, value) {
 						$('#selectClienteEdit')
-							.append($('<option>', { value: value['idCliente'] })
+							.append($('<option>', {
+									value: value['idCliente']
+								})
 								.text(value['denominacion']));
 					});
 					$('#selectClienteEdit').val(data['idCliente']).change();
@@ -933,7 +957,9 @@ $(document).ready(function () {
 
 					$.each(tipo_acciones, function (key, value) {
 						$('#selectTipoAccionEdit')
-							.append($('<option>', { value: value['idTipoAccion'] })
+							.append($('<option>', {
+									value: value['idTipoAccion']
+								})
 								.text(value['tipoAccion']));
 					});
 					$('#selectTipoAccionEdit').val(data['idTipoAccion']).change();
@@ -953,7 +979,9 @@ $(document).ready(function () {
 
 					$.each(estado_acciones, function (key, value) {
 						$('#selectEstadoAccionEdit')
-							.append($('<option>', { value: value['idEstadoAccion'] })
+							.append($('<option>', {
+									value: value['idEstadoAccion']
+								})
 								.text(value['estadoAccion']));
 					});
 					$('#selectEstadoAccionEdit').val(data['idEstadoAccion']).change();
@@ -1001,13 +1029,12 @@ $(document).ready(function () {
 		let estadosAcciones = $('#table_esAcciones').DataTable({
 			"processing": true,
 			"serverSide": true,
-			"ajax": "EstadosAcciones/getEstadosAcciones",  // ../Controlador/funcion
+			"ajax": "EstadosAcciones/getEstadosAcciones", // ../Controlador/funcion
 			"info": false,
 			"language": {
 				"url": "datatables/Languages/Spanish.json"
 			},
-			"columnDefs": [
-				{
+			"columnDefs": [{
 					targets: [0],
 					"bVisible": false
 				},
@@ -1022,7 +1049,10 @@ $(document).ready(function () {
 					}
 
 				},
-				{ className: "dt-center", targets: ["_all"] }
+				{
+					className: "dt-center",
+					targets: ["_all"]
+				}
 			],
 			'responsive': true,
 			'dom': 'lBfrtip',
@@ -1041,8 +1071,7 @@ $(document).ready(function () {
 					});
 				});
 			},
-			"buttons": [
-				{
+			"buttons": [{
 					"extend": 'excelHtml5',
 					"text": '<i class="fas fa-file-excel" style="color:green;"></i>',
 					"titleAttr": 'Exportar a Excel',
@@ -1115,7 +1144,7 @@ $(document).ready(function () {
 
 	// TIPO ACCIONES
 	else if (window.location.pathname.includes('/tipoAcciones')) {
-		
+
 		/* Añdir cajas de busqueda a las cabeceras */
 		console.log('BUSCAMOS ESTADOS CLIENTES');
 		$('#table_tipAcciones thead th').each(function () {
@@ -1126,13 +1155,12 @@ $(document).ready(function () {
 		let tipoAcciones = $('#table_tipAcciones').DataTable({
 			"processing": true,
 			"serverSide": true,
-			"ajax": "TipoAcciones/getTipoAcciones",  // ../Controlador/funcion
+			"ajax": "TipoAcciones/getTipoAcciones", // ../Controlador/funcion
 			"info": false,
 			"language": {
 				"url": "datatables/Languages/Spanish.json"
 			},
-			"columnDefs": [
-				{
+			"columnDefs": [{
 					targets: [0],
 					"bVisible": false
 				},
@@ -1147,7 +1175,10 @@ $(document).ready(function () {
 					}
 
 				},
-				{ className: "dt-center", targets: ["_all"] }
+				{
+					className: "dt-center",
+					targets: ["_all"]
+				}
 			],
 			'responsive': true,
 			'dom': 'lBfrtip',
@@ -1166,8 +1197,7 @@ $(document).ready(function () {
 					});
 				});
 			},
-			"buttons": [
-				{
+			"buttons": [{
 					"extend": 'excelHtml5',
 					"text": '<i class="fas fa-file-excel" style="color:green;"></i>',
 					"titleAttr": 'Exportar a Excel',
