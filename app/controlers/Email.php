@@ -26,13 +26,13 @@
             $mail->Host = "smtp.gmail.com";
             $mail->Port = 465; // or 587
             $mail->IsHTML(true);
-            $mail->Username = "info@dataleanmakers.es";
-            $mail->Password = "Bobedano2019$";
-            $mail->SetFrom("info@dataleanmakers.es","Calendario"); 
+            $mail->Username = "";
+            $mail->Password = "";
+            $mail->SetFrom(""); 
             $mail->Subject = utf8_decode("NUEVA TAREA");
             $mail->Body = $mensaje ;           
             $mail->AddAddress($datosUsuario->email);
-            // $mail->AddAddress("armine.manukyan@dataleanmakers.es");
+           
             
             if(!$mail->Send()) {
               echo "Mailer Error: " . $mail->ErrorInfo;

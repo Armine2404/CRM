@@ -24,9 +24,9 @@
             $mail->Host = "smtp.gmail.com";
             $mail->Port = 465; // or 587
             $mail->IsHTML(true);
-            $mail->Username = "info@dataleanmakers.es";
-            $mail->Password = "Bobedano2019$";
-            $mail->SetFrom("info@dataleanmakers.es","Recuperar"); 
+            $mail->Username = "";
+            $mail->Password = "";
+            $mail->SetFrom(""); 
             $mail->Subject = utf8_decode("NUEVA TAREA".$email);
             $mail->Body = "Ha solicitado cambiar su contraseña actual. Para llevar a cabo el cambio debera pinchar en el siguiente enlace e 
             introducir una nueva:
